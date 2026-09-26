@@ -46,8 +46,6 @@ if 'selected_student' not in st.session_state:
     st.session_state.selected_student = "Aditya"
 if 'scenario_result' not in st.session_state:
     st.session_state.scenario_result = None
-if 'current_scenario_idx' not in st.session_state:
-    st.session_state.current_scenario_idx = 0
 
 # --- DUMMY DATA ---
 reels_data = [
@@ -409,32 +407,130 @@ elif page == "🧠 Quick Learning":
 
 elif page == "🏆 Investing IQ Quiz":
     st.title("Investing IQ Quiz & Leaderboard 🏅")
-    st.write("Test your knowledge. 5 Questions. 2 points each.")
+    st.write("Test your knowledge across 5 core investing concepts. 2 points per correct question (Max: 10).")
     
     with st.form("quiz_form"):
-        q1 = st.radio("1. What does SIP stand for?", ["Standard Investment Policy", "Systematic Investment Plan", "Stock Income Portfolio"])
-        q2 = st.radio("2. Which is generally considered higher risk?", ["Fixed Deposits (FDs)", "Government Bonds", "Direct Stocks"])
-        q3 = st.radio("3. What fights inflation best over the long term?", ["Keeping cash in a locker", "Savings Accounts", "Equity Mutual Funds"])
-        q4 = st.radio("4. 'Don't put all your eggs in one basket' refers to:", ["Compounding", "Diversification", "Liquidity"])
-        q5 = st.radio("5. When the stock market crashes, a good long-term investor should:", ["Panic and sell everything", "Review, stay calm, and maybe buy more", "Delete their trading app forever"])
+        st.markdown("#### **1. What is a SIP (Systematic Investment Plan)?**")
+        q1 = st.radio(
+            "Select your answer for Question 1:",
+            [
+                "A) A one-time lump sum investment in a stock",
+                "B) A fixed amount invested regularly (e.g. monthly) into a mutual fund",
+                "C) A type of savings account offered only to students",
+                "D) A loan taken to invest in the stock market"
+            ],
+            index=None,
+            label_visibility="collapsed"
+        )
+        
+        st.markdown("#### **2. Why do financial advisors recommend diversification (spreading money across multiple assets)?**")
+        q2 = st.radio(
+            "Select your answer for Question 2:",
+            [
+                "A) It guarantees higher returns than any single stock",
+                "B) It reduces the impact of any one investment performing badly",
+                "C) It's required by law for student investors",
+                "D) It eliminates all investment risk completely"
+            ],
+            index=None,
+            label_visibility="collapsed"
+        )
+        
+        st.markdown("#### **3. Before making any investment, what should a student ideally have in place first?**")
+        q3 = st.radio(
+            "Select your answer for Question 3:",
+            [
+                "A) A demat account with at least 5 different apps",
+                "B) A small emergency fund to cover unexpected expenses",
+                "C) A subscription to a paid stock tips channel",
+                "D) At least ₹1 lakh in savings"
+            ],
+            index=None,
+            label_visibility="collapsed"
+        )
+        
+        st.markdown("#### **4. Why are options and futures (derivatives) considered risky for beginner student investors?**")
+        q4 = st.radio(
+            "Select your answer for Question 4:",
+            [
+                "A) They are illegal for anyone under 25",
+                "B) They can lose their entire value quickly due to leverage and expiry dates",
+                "C) They only allow investments in foreign companies",
+                "D) They require a minimum investment of ₹10 lakh"
+            ],
+            index=None,
+            label_visibility="collapsed"
+        )
+        
+        st.markdown("#### **5. A group promises 'guaranteed 5% monthly returns' if you invest and recruit others. What is this most likely?**")
+        q5 = st.radio(
+            "Select your answer for Question 5:",
+            [
+                "A) A legitimate high-return mutual fund",
+                "B) A government-backed savings scheme",
+                "C) A possible Ponzi or pyramid scheme",
+                "D) A standard fixed deposit offer from a bank"
+            ],
+            index=None,
+            label_visibility="collapsed"
+        )
         
         submitted = st.form_submit_button("Submit Answers")
         
         if submitted:
-            score = 0
-            if q1 == "Systematic Investment Plan": score += 2
-            if q2 == "Direct Stocks": score += 2
-            if q3 == "Equity Mutual Funds": score += 2
-            if q4 == "Diversification": score += 2
-            if q5 == "Review, stay calm, and maybe buy more": score += 2
-            
-            st.session_state.quiz_score = score
-            if score > st.session_state.best_score:
-                st.session_state.best_score = score
+            if not all([q1, q2, q3, q4, q5]):
+                st.warning("⚠️ Please answer all 5 questions before submitting!")
+            else:
+                score = 0
+                results = []
                 
-            st.success(f"You scored {score}/10!")
-            if score == 10:
-                st.balloons()
+                # Check Q1
+                if q1 == "B) A fixed amount invested regularly (e.g. monthly) into a mutual fund":
+                    score += 2
+                    results.append("✅ **Q1:** Correct! An SIP automates regular investing into mutual funds.")
+                else:
+                    results.append("❌ **Q1:** Incorrect. Correct Answer is **B) A fixed amount invested regularly (e.g. monthly) into a mutual fund**.")
+                
+                # Check Q2
+                if q2 == "B) It reduces the impact of any one investment performing badly":
+                    score += 2
+                    results.append("✅ **Q2:** Correct! Diversification cushions your portfolio from individual company drops.")
+                else:
+                    results.append("❌ **Q2:** Incorrect. Correct Answer is **B) It reduces the impact of any one investment performing badly**.")
+                
+                # Check Q3
+                if q3 == "B) A small emergency fund to cover unexpected expenses":
+                    score += 2
+                    results.append("✅ **Q3:** Correct! Always build an emergency fund before locking cash into market assets.")
+                else:
+                    results.append("❌ **Q3:** Incorrect. Correct Answer is **B) A small emergency fund to cover unexpected expenses**.")
+                
+                # Check Q4
+                if q4 == "B) They can lose their entire value quickly due to leverage and expiry dates":
+                    score += 2
+                    results.append("✅ **Q4:** Correct! Leverage and expiry decay can wipe out options contracts to ₹0.")
+                else:
+                    results.append("❌ **Q4:** Incorrect. Correct Answer is **B) They can lose their entire value quickly due to leverage and expiry dates**.")
+                
+                # Check Q5
+                if q5 == "C) A possible Ponzi or pyramid scheme":
+                    score += 2
+                    results.append("✅ **Q5:** Correct! 'Guaranteed returns' + multi-level referral recruitment is textbook Ponzi behavior.")
+                else:
+                    results.append("❌ **Q5:** Incorrect. Correct Answer is **C) A possible Ponzi or pyramid scheme**.")
+                
+                st.session_state.quiz_score = score
+                if score > st.session_state.best_score:
+                    st.session_state.best_score = score
+                
+                st.success(f"🎯 You scored {score}/10!")
+                if score == 10:
+                    st.balloons()
+                    st.toast("🎉 Perfect score! Master Investor tier reached.")
+                    
+                with st.expander("📝 View Detailed Question Breakdown", expanded=True):
+                    for res in results:
+                        st.markdown(res)
 
     if st.session_state.quiz_score is not None:
         st.write("---")
@@ -456,9 +552,9 @@ elif page == "🏆 Investing IQ Quiz":
         st.dataframe(df_lb.style.apply(highlight_user, axis=1), use_container_width=True)
         
         if st.session_state.best_score >= 8:
-            st.write("🔥 You're in the top tier! Great financial instincts.")
+            st.write("🔥 Top tier instincts! You have a firm grip on personal finance fundamentals.")
         else:
-            st.write("📈 Room to grow — review the Quick Learning section and try again!")
+            st.write("📈 Good effort! Review the Quick Learning section and take another swing.")
 
 elif page == "🎬 Real Interviews":
     st.title("Other Student Experiences 🎙️")
@@ -480,11 +576,10 @@ elif page == "🎬 Real Interviews":
     st.markdown(f"### Interview with {st.session_state.selected_student}")
     st.write(f"*{students[st.session_state.selected_student]}*")
     
-    # Use the exact capitalized name from the dropdown to match the file
     file_name = st.session_state.selected_student + ".mp4"
     video_path = os.path.join("videos", file_name)
     
     if os.path.exists(video_path):
         st.video(video_path)
     else:
-        st.info(f"🚧 Video for {st.session_state.selected_student} coming soon! (Make sure '{file_name}' is uploaded).")
+        st.info(f"🚧 Video for {st.session_state.selected_student} coming soon! (Make sure '{file_name}' is uploaded in the videos folder).")

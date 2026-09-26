@@ -49,12 +49,16 @@ if 'scenario_result' not in st.session_state:
 
 # --- DUMMY DATA ---
 reels_data = [
-    {"name": "Pratiksha", "story": "Bought random crypto at 2 AM.", "mistake": "Listened to a Twitter guru.", "lesson": "Do your own research (DYOR)!"},
-    {"name": "Rohan", "story": "Put my whole allowance into one stock.", "mistake": "Zero diversification.", "lesson": "Don't put all eggs in one basket."},
-    {"name": "Viplove", "story": "Started a ₹500 SIP.", "mistake": "Waited too long to start.", "lesson": "Time in the market > timing the market."},
-    {"name": "Aarav", "story": "Panic sold when the market dipped 5%.", "mistake": "Letting emotions win.", "lesson": "Volatility is normal. Hold steady."},
-    {"name": "Priya", "story": "Tried day trading during lectures.", "mistake": "Got distracted and lost ₹2000.", "lesson": "Investing should be passive for students."},
-    {"name": "Prince", "story": "Researched Ashtavinayak fundamentals.", "mistake": "Overanalyzed and missed the entry.", "lesson": "Perfection is the enemy of action."}
+    {"name": "Pratiksha", "title": "Reel 1", "story": "Bought random crypto at 2 AM.", "mistake": "Listened to a Twitter guru.", "lesson": "Do your own research (DYOR)!"},
+    {"name": "Rohan", "title": "Reel 2", "story": "Put my whole allowance into one stock.", "mistake": "Zero diversification.", "lesson": "Don't put all eggs in one basket."},
+    {"name": "Viplove", "title": "Reel 3", "story": "Started a ₹500 SIP.", "mistake": "Waited too long to start.", "lesson": "Time in the market > timing the market."},
+    {"name": "Aarav", "title": "Reel 4", "story": "Panic sold when the market dipped 5%.", "mistake": "Letting emotions win.", "lesson": "Volatility is normal. Hold steady."},
+    {"name": "Priya", "title": "Reel 5", "story": "Tried day trading during lectures.", "mistake": "Got distracted and lost ₹2000.", "lesson": "Investing should be passive for students."},
+    {"name": "Prince", "title": "Reel 6", "story": "Researched Ashtavinayak fundamentals.", "mistake": "Overanalyzed and missed the entry.", "lesson": "Perfection is the enemy of action."},
+    {"name": "Neha", "title": "Reel 7", "story": "Copied a YouTuber's exact portfolio.", "mistake": "Didn't check my own risk appetite.", "lesson": "Personal finance is highly personal."},
+    {"name": "Arjun", "title": "Reel 8", "story": "Kept all savings in a basic bank account.", "mistake": "Ignored inflation eating the value.", "lesson": "Cash is trash if it doesn't grow."},
+    {"name": "Meera", "title": "Reel 9", "story": "Started investing with zero backup cash.", "mistake": "Had to sell at a loss for an emergency.", "lesson": "Build an emergency fund first."},
+    {"name": "Kabir", "title": "Reel 10", "story": "Bought shares at ₹2 hoping they hit ₹100.", "mistake": "Fell for the penny stock trap.", "lesson": "Cheap stocks are usually cheap for a reason."}
 ]
 
 blogs_data = [
@@ -113,10 +117,23 @@ elif page == "🎥 Student Reels":
     st.title("Student Investor Reels 📱")
     st.write("Real mistakes. Real lessons. No judgment here.")
     
+    # Create a grid layout for the 10 reels
     cols = st.columns(3)
+    
     for i, reel in enumerate(reels_data):
         col = cols[i % 3]
         with col:
+            st.markdown(f"#### {reel['title']}")
+            
+            # Construct the path to the reel file (e.g., reels/reel_1.mp4)
+            video_file = os.path.join("reels", f"reel_{i+1}.mp4")
+            
+            # Show the video if it exists in the folder
+            if os.path.exists(video_file):
+                st.video(video_file)
+            else:
+                st.info(f"🚧 {reel['title']} coming soon! (Upload 'reel_{i+1}.mp4')")
+                
             with st.expander(f"👤 {reel['name']}'s Story"):
                 st.markdown(f"**The Vibe:** {reel['story']}")
                 st.markdown(f"📉 **Mistake:** {reel['mistake']}")

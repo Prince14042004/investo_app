@@ -38,7 +38,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# --- NAVIGATION FUNCTION ---
+def go_to(page_name):
+    st.session_state.page_selection = page_name
+
 # --- SESSION STATE INITIALIZATION ---
+if 'page_selection' not in st.session_state:
+    st.session_state.page_selection = "🏠 Home"
 if 'quiz_score' not in st.session_state:
     st.session_state.quiz_score = None
 if 'best_score' not in st.session_state:
@@ -83,7 +89,7 @@ page = st.sidebar.radio("Navigate", [
     "🧠 Quick Learning", 
     "🏆 Investing IQ Quiz",
     "🎬 Real Interviews"
-])
+], key="page_selection")
 
 # --- PAGE LOGIC ---
 
@@ -95,15 +101,16 @@ if page == "🏠 Home":
     st.write("---")
     st.subheader("Explore the App")
     c1, c2, c3 = st.columns(3)
+    
     with c1:
-        with st.expander("🎥 Student Reels", expanded=True):
-            st.write("Quick stories, mistakes, and lessons from peers.")
+        st.info("🎥 **Student Reels**\n\nQuick stories, mistakes, and lessons from peers.")
+        st.button("Watch Reels", on_click=go_to, args=("🎥 Student Reels",), use_container_width=True)
     with c2:
-        with st.expander("🎮 Play Scenarios", expanded=True):
-            st.write("Test your instincts with real-life money dilemmas.")
+        st.info("🎮 **Play Scenarios**\n\nTest your instincts with real-life money dilemmas.")
+        st.button("Play Now", on_click=go_to, args=("🎮 What Would You Do?",), use_container_width=True)
     with c3:
-        with st.expander("🏆 Take the Quiz", expanded=True):
-            st.write("Find out your Investor IQ and check the leaderboard.")
+        st.info("🏆 **Take the Quiz**\n\nFind out your Investor IQ and check the leaderboard.")
+        st.button("Start Quiz", on_click=go_to, args=("🏆 Investing IQ Quiz",), use_container_width=True)
 
 elif page == "🎥 Student Reels":
     st.title("Student Investor Reels 📱")

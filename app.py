@@ -28,12 +28,6 @@ st.markdown("""
         font-family: 'Helvetica Neue', sans-serif;
         color: #2c3e50;
     }
-    
-    /* Highlight text */
-    .highlight {
-        color: #ff4b4b;
-        font-weight: bold;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -49,7 +43,7 @@ if 'quiz_score' not in st.session_state:
 if 'best_score' not in st.session_state:
     st.session_state.best_score = 0
 if 'selected_student' not in st.session_state:
-    st.session_state.selected_student = "Prince Kushwaha"
+    st.session_state.selected_student = "Aditya"
 if 'scenario_result' not in st.session_state:
     st.session_state.scenario_result = None
 
@@ -312,10 +306,10 @@ elif page == "🎬 Real Interviews":
     st.write("Hear directly from students navigating the markets.")
     
     students = {
-        "Prince Kushwaha": "Translating classroom finance theories into real portfolio gains.",
-        "Viplove": "Talks about analyzing credit controls and market trends.",
-        "Pratiksha": "Balancing college exams at D.Y. Patil and tracking the stock market.",
-        "Aarav Sharma": "Talks about losing money in his first stock pick."
+        "Aditya": "Translating classroom finance theories into real portfolio gains.",
+        "Anoop": "Talks about analyzing credit controls and market trends.",
+        "Shreya": "Balancing college exams and tracking the stock market.",
+        "Shradha": "Talks about learning from first stock picks."
     }
     
     st.session_state.selected_student = st.selectbox(
@@ -327,11 +321,11 @@ elif page == "🎬 Real Interviews":
     st.markdown(f"### Interview with {st.session_state.selected_student}")
     st.write(f"*{students[st.session_state.selected_student]}*")
     
-    # Construct exact filename mapping (e.g. "Prince Kushwaha" -> "prince_kushwaha.mp4")
-    file_name = st.session_state.selected_student.lower().replace(" ", "_") + ".mp4"
+    # Use the exact capitalized name from the dropdown to match the file
+    file_name = st.session_state.selected_student + ".mp4"
     video_path = os.path.join("videos", file_name)
     
     if os.path.exists(video_path):
         st.video(video_path)
     else:
-        st.info(f"🚧 Video for {st.session_state.selected_student} coming soon! (Make sure '{file_name}' is inside the 'videos' folder).")
+        st.info(f"🚧 Video for {st.session_state.selected_student} coming soon! (Make sure '{file_name}' is uploaded).")

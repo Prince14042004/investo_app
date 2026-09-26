@@ -47,7 +47,8 @@ if 'selected_student' not in st.session_state:
 if 'scenario_result' not in st.session_state:
     st.session_state.scenario_result = None
 
-# --- REELS DATA (NAMES COMPLETELY REMOVED) ---
+# --- DUMMY DATA ---
+# Exactly 10 reels, fully anonymized. No student names here.
 reels_data = [
     {"title": "Reel 1", "story": "Bought random crypto at 2 AM.", "mistake": "Listened to a Twitter guru.", "lesson": "Do your own research (DYOR)!"},
     {"title": "Reel 2", "story": "Put my whole allowance into one stock.", "mistake": "Zero diversification.", "lesson": "Don't put all eggs in one basket."},
@@ -61,7 +62,6 @@ reels_data = [
     {"title": "Reel 10", "story": "Bought shares at ₹2 hoping they hit ₹100.", "mistake": "Fell for the penny stock trap.", "lesson": "Cheap stocks are usually cheap for a reason."}
 ]
 
-# --- BLOGS DATA ---
 blogs_data = [
     {"title": "The ₹500 SIP That Became a Habit: Ananya's Quiet Bet on Discipline", "time": "4 min read", "excerpt": "How a simple ₹500 monthly investment grew into a ₹34,000 portfolio.", "content": """Ananya Krishnan was a second-year commerce student in Chennai when her father gave her ₹500 and one instruction: "Put this into a mutual fund SIP every month, and don't touch it, no matter what." She didn't fully understand what a SIP was, but she opened an account, picked a simple index fund, and set up an auto-debit.\n\nFor the first year, nothing exciting happened. The market dipped during her second semester, and her ₹6,000 investment briefly showed as ₹5,400. She almost cancelled the SIP out of panic. Instead, she asked a professor about it, who explained the idea of rupee-cost averaging — that a falling market meant her fixed ₹500 was now buying more units, not fewer.\n\nShe kept going. By the time she graduated, four years later, she'd invested ₹24,000 in small monthly instalments — and it had grown to just over ₹34,000, without her ever making a single "smart" trade.\n\n**The lesson:** Ananya's story isn't dramatic, and that's the point. She didn't pick a winning stock or time the market. She understood one concept — compounding through consistency — and let time do the work. Most successful student investors don't have secret knowledge; they have patience and a basic grasp of how their money grows."""},
     {"title": "How Rohan Mehta Lost His Semester's Book Fund Chasing a Telegram Tip", "time": "4 min read", "excerpt": "The harsh reality of 'guaranteed' profits and pump-and-dump schemes.", "content": """Rohan Mehta was in his final year of engineering in Pune when he joined a "stock tips" Telegram group with 40,000 members. The admin posted a small-cap chemical stock, calling it "the next multibagger" with screenshots of past picks that had apparently doubled overnight.\n\nRohan didn't check the company's financials, its promoter history, or even what the business actually did. He borrowed ₹15,000 from his book and mess fund, opened a trading app, and bought in — convinced he'd sell within a week for a quick profit.\n\nThe stock rose 8% on day one. He didn't sell, expecting more. Over the next ten days, it fell steadily as the group's "insiders" quietly exited their own positions, a classic pump-and-dump pattern. Rohan held on, refreshing the app daily, until the stock had dropped 60%. He eventually sold at a loss of nearly ₹9,000 — money he then had to explain to his parents.\n\n**The lesson:** Rohan's mistake wasn't bad luck; it was treating an anonymous tip as research. He never checked the company's basics, never questioned why strangers would freely share "guaranteed" profits, and invested money he couldn't afford to lose. A five-minute check of the company's fundamentals — or simply asking "why would this admin give away free money?" — would have saved him the loss."""},
@@ -126,14 +126,25 @@ elif page == "🎥 Student Reels":
         with col:
             st.markdown(f"#### {reel['title']}")
             
-            # EXACT PATH MATCHING: reels/reel1.mp4, reels/reel2.mp4, etc.
-            video_file = os.path.join("reels", f"reel{i+1}.mp4")
+            # THE SMART SEARCH LOGIC
+            target_file = f"reel{i+1}.mp4"
             
-            # Show the video if it exists in the folder
-            if os.path.exists(video_file):
-                st.video(video_file)
-            else:
-                st.info(f"🚧 {reel['title']} coming soon! (Upload 'reel{i+1}.mp4')")
+            # It will check all these locations automatically
+            possible_paths = [
+                os.path.join("reels", target_file),
+                target_file,
+                os.path.join("videos", target_file)
+            ]
+            
+            video_found = False
+            for path in possible_paths:
+                if os.path.exists(path):
+                    st.video(path)
+                    video_found = True
+                    break
+                    
+            if not video_found:
+                st.error(f"🚧 Could not find '{target_file}' on GitHub.")
                 
             with st.expander(f"📖 {reel['title']} Details"):
                 st.markdown(f"**The Vibe:** {reel['story']}")

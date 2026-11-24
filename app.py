@@ -43,7 +43,7 @@ if 'quiz_score' not in st.session_state:
 if 'best_score' not in st.session_state:
     st.session_state.best_score = 0
 if 'selected_student' not in st.session_state:
-    st.session_state.selected_student = "Aditya"
+    st.session_state.selected_student = "Shrey"
 if 'scenario_result' not in st.session_state:
     st.session_state.scenario_result = None
 
@@ -590,10 +590,7 @@ elif page == "🎬 Real Interviews":
     st.write("Hear directly from students navigating the markets.")
     
     students = {
-        "Aditya": "Translating classroom finance theories into real portfolio gains.",
-        "Anoop": "Talks about analyzing credit controls and market trends.",
-        "Shreya": "Balancing college exams and tracking the stock market.",
-        "Shradha": "Talks about learning from first stock picks."
+        "Shrey": "Sharing practical lessons on building long-term wealth and navigating market volatility as a student investor."
     }
     
     st.session_state.selected_student = st.selectbox(

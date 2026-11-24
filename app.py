@@ -590,7 +590,8 @@ elif page == "🎬 Real Interviews":
     st.write("Hear directly from students navigating the markets.")
     
     students = {
-        "Shrey": "Sharing practical lessons on building long-term wealth and navigating market volatility as a student investor."
+        "Shrey": "Sharing practical lessons on building long-term wealth and navigating market volatility as a student investor.",
+        "Isha": "Discusses getting started with smart budgeting, disciplined SIPs, and avoiding common beginner investing traps."
     }
     
     st.session_state.selected_student = st.selectbox(
